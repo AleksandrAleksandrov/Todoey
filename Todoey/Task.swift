@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Task {
+class Task: Encodable {
     
     var title : String = ""
     var status : Bool = false

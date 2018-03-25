@@ -12,10 +12,12 @@ class TodoListViewController: UITableViewController {
     
     var itemArray = [Task]()
     
-    let defaults = UserDefaults.standard
+    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print(dataFilePath)
         
         let newTask = Task(title : "One", status : true)
         let newTask1 = Task(title : "Two", status : false)
@@ -25,25 +27,10 @@ class TodoListViewController: UITableViewController {
         itemArray.append(newTask1)
         itemArray.append(newTask2)
         itemArray.append(newTask3)
-        itemArray.append(newTask3)
-        itemArray.append(newTask3)
-        itemArray.append(newTask3)
-        itemArray.append(newTask3)
-        itemArray.append(newTask3)
-        itemArray.append(newTask3)
-        itemArray.append(newTask3)
-        itemArray.append(newTask3)
-        itemArray.append(newTask3)
-        itemArray.append(newTask3)
-        itemArray.append(newTask3)
-        itemArray.append(newTask3)
-        itemArray.append(newTask3)
-        itemArray.append(newTask3)
-        itemArray.append(newTask3)
         
-        if let items = defaults.array(forKey: "TodoListArray") as? [Task] {
-            itemArray = items
-        }
+//        if let items = defaults.array(forKey: "TodoListArray") as? [Task] {
+//            itemArray = items
+//        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -71,6 +58,8 @@ class TodoListViewController: UITableViewController {
             tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         }
         
+        self.saveItem()
+        
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -84,8 +73,7 @@ class TodoListViewController: UITableViewController {
             let newTask = Task(title : textField.text!, status : false)
             self.itemArray.append(newTask)
             
-            self.defaults.set(self.itemArray, forKey: "TodoListArray")
-            self.tableView.reloadData()
+            self.saveItem()
         })
         
         alert.addTextField(configurationHandler: {(alertTextField) in
@@ -97,4 +85,16 @@ class TodoListViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     
+    func saveItem() {
+        let encoder = PropertyListEncoder()
+        
+        do {
+            let data = try encoder.encode(itemArray)
+            try data.write(to: dataFilePath!)
+        } catch {
+            print("Error encoding item array, \(error)")
+        }
+        
+        tableView.reloadData()
+    }
 }
