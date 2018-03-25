@@ -17,20 +17,7 @@ class TodoListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print(dataFilePath)
-        
-        let newTask = Task(title : "One", status : true)
-        let newTask1 = Task(title : "Two", status : false)
-        let newTask2 = Task(title : "Three", status : false)
-        let newTask3 = Task(title : "Four", status : false)
-        itemArray.append(newTask)
-        itemArray.append(newTask1)
-        itemArray.append(newTask2)
-        itemArray.append(newTask3)
-        
-//        if let items = defaults.array(forKey: "TodoListArray") as? [Task] {
-//            itemArray = items
-//        }
+        loadItems()
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -96,5 +83,17 @@ class TodoListViewController: UITableViewController {
         }
         
         tableView.reloadData()
+    }
+    
+    func loadItems() {
+        if let data = try? Data(contentsOf: dataFilePath!) {
+            let decoder = PropertyListDecoder()
+            do {
+                itemArray = try decoder.decode([Task].self, from: data)
+            } catch {
+                print("Error decoding item array, \(error)")
+            }
+                
+        }
     }
 }
