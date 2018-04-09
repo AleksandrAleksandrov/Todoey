@@ -22,7 +22,6 @@ class CategoryViewController: UITableViewController {
     }
     
     //MARK: - TableView Delegate Methods
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
         
@@ -74,7 +73,6 @@ class CategoryViewController: UITableViewController {
     }
     
     //MARK: - TableView Datasource Methods
-    
     func saveItem() {
         do {
             try context.save()
@@ -94,6 +92,4 @@ class CategoryViewController: UITableViewController {
         
         tableView.reloadData()
     }
-    
-    //MARK: - Data Manipulation Methods
 }
