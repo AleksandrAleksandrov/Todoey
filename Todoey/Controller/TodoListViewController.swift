@@ -15,12 +15,17 @@ class TodoListViewController: UITableViewController {
     
     var itemArray = [Task]()
     
+    var selectedCategory : Category? {
+        didSet {
+            loadItems()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
-        
-        loadItems()
+
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -65,12 +70,10 @@ class TodoListViewController: UITableViewController {
         
         let action = UIAlertAction(title: "Add item", style: .default, handler: {(action) in
             
-            
-            
             let newTask = Task(context: self.context)
-//            let newTask = Task(title : textField.text!, status : false)
             newTask.title = textField.text!
             newTask.done = false
+            newTask.parentCategory = self.selectedCategory
             self.itemArray.append(newTask)
             
             self.saveItem()
