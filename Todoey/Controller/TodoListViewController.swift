@@ -51,6 +51,9 @@ class TodoListViewController: UITableViewController {
         if let item = itemArray?[indexPath.row] {
             do {
                 try realm.write {
+                    
+//                    Delete
+//                    realm.delete(item)
                     item.done = !item.done
                 }
             } catch {
@@ -59,16 +62,6 @@ class TodoListViewController: UITableViewController {
         }
         
         tableView.reloadData()
-        
-//        itemArray[indexPath.row].done = !itemArray[indexPath.row].done
-//
-//        if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
-//            tableView.cellForRow(at: indexPath)?.accessoryType = .none
-//        } else {
-//            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-//        }
-//
-//        self.saveItem()
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -95,9 +88,6 @@ class TodoListViewController: UITableViewController {
             }
             
             self.tableView.reloadData()
-//            newTask.parentCategory = self.selectedCategory
-
-            
         })
         
         alert.addTextField(configurationHandler: {(alertTextField) in
