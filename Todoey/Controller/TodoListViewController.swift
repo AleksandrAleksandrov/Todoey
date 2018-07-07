@@ -16,6 +16,8 @@ class TodoListViewController: SwipeTableViewController {
     var itemArray: Results<Item>?
     var realm = try! Realm()
     
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     var selectedCategory : Category? {
         didSet {
             category = selectedCategory
@@ -31,12 +33,24 @@ class TodoListViewController: SwipeTableViewController {
         tableView.separatorStyle = .none
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        if let colorHex = selectedCategory?.cellColor {
+            
+            title = selectedCategory!.name
+            
+            guard let navBar = navigationController?.navigationBar else {fatalError("Navigation controller does not exist.")}
+            
+            navBar.barTintColor = UIColor(hexString: colorHex)
+            
+            searchBar.barTintColor = UIColor(hexString: colorHex)
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
         if let taks = itemArray?[indexPath.row] {
             cell.textLabel?.text = taks.title
-//            let UIColor cool = UIColor((category?.cellColor)!)
             if let color = UIColor(hexString: category!.cellColor)?.darken(byPercentage: CGFloat(indexPath.row) / CGFloat(itemArray!.count)) {
                 cell.backgroundColor = color
                 cell.textLabel?.textColor = ContrastColorOf(color, returnFlat: true)
