@@ -16,13 +16,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         // Override point for customization after application launch.
         
-//        print(Realm.Configuration.defaultConfiguration.fileURL)
+        //        print(Realm.Configuration.defaultConfiguration.fileURL)
         
         do {
-//            let realm = try Realm()
+            //            let realm = try Realm()
             // can do this instead
             _ = try Realm()
         } catch {
